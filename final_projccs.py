@@ -22,5 +22,5 @@ class Order:
         self.products = products
 
 class Payment:
-#checkout print the total amount and ask for an input if the user wants to buy the products add a yes/no question
+#checkout print the total amount and ask for input if the user wants to buy the products add a yes/no question
   
