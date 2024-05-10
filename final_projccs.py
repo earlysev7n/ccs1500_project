@@ -11,14 +11,14 @@ class Arcade:
     
     def add_money(self, amount):
         if self.money + amount > 100:
-            print("Error: Maximum money allowed is $100.")
+            print("Invalid Amount!")
             return False
         
         self.money += amount
         return True
     
     def buy_token(self, token_price_index=0):
-        num_tokens = int(input("Enter the number of tokens you want to buy: "))
+        num_tokens = int(input("How many tokens do you want to buy?: "))
         token_price = self.token_prices[token_price_index]
         total_cost = num_tokens * token_price
         
@@ -27,7 +27,7 @@ class Arcade:
             return False
         
         if self.tokens + num_tokens > 100:  
-            print("Token limit exceeded! You cannot buy more tokens.")
+            print("Token limit exceeded!")
             return False
         
         self.money -= total_cost
@@ -64,7 +64,7 @@ class Game:
 
 class Basketball(Game):
     def __init__(self):
-        super().__init__(2)
+        super().__init__(1)
     
     def play(self):
         points = random.choice([0, 0, 0, 1, 2, 3])
@@ -72,23 +72,10 @@ class Basketball(Game):
             return "You won! You scored {} points.".format(points), points
         else:
             return "You lost! Better luck next time.", 0
-
-class Fishing(Game):
-    def __init__(self):
-        super().__init__(3)
-        self.fish_types = ['Trash', 'Worm', 'Salmon', 'Bass', 'Catfish','Tilapia', 'Legendary Bangus']
-    
-    def play(self):
-        fish = random.choice(self.fish_types)
-        if fish in ['Trash', 'Worm']:
-            return f"You lost! You caught a {fish}.", 0
-        else:
-            tickets_won = 1 if fish in ['Salmon', 'Bass'] else 2 if fish == 'Catfish' else 5 if fish == 'Tilapia' else 50
-            return f"You won! You caught a {fish}.", tickets_won
-
+        
 class LuckyNine(Game):
     def __init__(self):
-        super().__init__(4)
+        super().__init__(3)
     
     def play(self):
         user_card = random.randint(1, 9)
@@ -99,6 +86,19 @@ class LuckyNine(Game):
             return f"You lost! Your card ({user_card}) is lower than the computer's card ({computer_card}).", 0
         else:
             return f"It's a draw! Your card and the computer's card are both {user_card}.", 0
+
+class Fishing(Game):
+    def __init__(self):
+        super().__init__(5)
+        self.fish_types = ['Trash', 'Worm', 'Salmon', 'Bass', 'Catfish','Tilapia', 'Legendary Bangus']
+    
+    def play(self):
+        fish = random.choice(self.fish_types)
+        if fish in ['Trash', 'Worm']:
+            return f"You lost! You caught a {fish}.", 0
+        else:
+            tickets_won = 1 if fish in ['Salmon', 'Bass'] else 2 if fish == 'Catfish' else 5 if fish == 'Tilapia' else 50
+            return f"You won! You caught a {fish}.", tickets_won
 
 class TicketBooth:
     def __init__(self):
