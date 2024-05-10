@@ -167,5 +167,6 @@ while True:
             else:
                 print("Invalid choice! Please enter 'y' or 'n'.")
     elif choice == 5:
+        print("Thank you for playing!")
         break
 
