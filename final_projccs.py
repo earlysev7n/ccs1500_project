@@ -2,12 +2,21 @@ import random
 
 class Arcade:
     
-    def __init__(self):
-        self.money = 0
+    def __init__(self, user_type):
+        self.money = self.generate_money(user_type)
         self.tokens = 0
         self.tickets = 0
         self.games = [Basketball(), LuckyNine(),Fishing()]
         self.token_prices = [1, 3, 5]  
+    
+    def generate_money(self, user_type):
+        if user_type.lower() == "student":
+            return random.randint(50, 200)
+        elif user_type.lower() == "worker":
+            return random.randint(200, 500)
+        else:
+            print("Invalid user type!")
+            return 0
     
     def add_money(self, amount):
         if self.money + amount > 100:
@@ -122,12 +131,14 @@ class TicketBooth:
         return tickets
 
 #usage
-arcade = Arcade()
+print("Welcome to the Arcade!")
+user_type = input("Are you a student or a worker? ").strip()
+arcade = Arcade(user_type)
 ticket_booth = TicketBooth()
 
 while True:
     print("\nWelcome to the Arcade!")
-    print("Money: $", arcade.money)
+    print("Money: ", arcade.money)
     print("Tokens: ", arcade.tokens)
     print("Tickets: ", arcade.tickets)
     print("1. Add money")
@@ -147,7 +158,7 @@ while True:
         while True:
             print("\nGames:")
             for i, game in enumerate(arcade.games):
-                print(f"{i+1}. {game.__class__.__name__} - Token Price: ${arcade.token_prices[i]}")
+                print(f"{i+1}. {game.__class__.__name__} - Token Price: {arcade.token_prices[i]}")
             print(f"{len(arcade.games)+1}. Exit")
             game_choice = int(input("Enter the game number: ")) - 1
             if game_choice == len(arcade.games):
