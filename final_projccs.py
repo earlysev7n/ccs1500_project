@@ -2,29 +2,12 @@ import random
 
 class Arcade:
     
-    def __init__(self, user_type):
-        self.money = self.generate_money(user_type)
+    def __init__(self):
+        self.money = 100
         self.tokens = 0
         self.tickets = 0
-        self.games = [Basketball(), LuckyNine(),Fishing()]
-        self.token_prices = [1, 3, 5]  
-    
-    def generate_money(self, user_type):
-        if user_type.lower() == "student":
-            return random.randint(50, 200)
-        elif user_type.lower() == "worker":
-            return random.randint(200, 500)
-        else:
-            print("Invalid user type!")
-            return 0
-    
-    def add_money(self, amount):
-        if self.money + amount > 100:
-            print("Invalid Amount!")
-            return False
-        
-        self.money += amount
-        return True
+        self.games = [MathQuiz(), WordScramble(), IloiloTrivia(), CPUQuiz(), ScienceExperiment()]
+        self.token_prices = [1, 2, 3, 4, 5]  
     
     def buy_token(self, token_price_index=0):
         num_tokens = int(input("How many tokens do you want to buy?: "))
@@ -33,7 +16,7 @@ class Arcade:
         
         if total_cost > self.money:
             print("Not enough money to buy that many tokens!")
-            return False
+            return False  
         
         if self.tokens + num_tokens > 100:  
             print("Token limit exceeded!")
@@ -71,48 +54,105 @@ class Game:
     def play(self):
         pass
 
-class Basketball(Game):
+class MathQuiz(Game):
     def __init__(self):
         super().__init__(1)
     
     def play(self):
-        points = random.choice([0, 0, 0, 1, 2, 3])
-        if points > 0:
-            return "You won! You scored {} points.".format(points), points
+        # Generate a random math question
+        num1 = random.randint(1, 20)
+        num2 = random.randint(1, 20)
+        operator = random.choice(['+', '-', '*'])
+        if operator == '+':
+            answer = num1 + num2
+        elif operator == '-':
+            answer = num1 - num2
         else:
-            return "You lost! Better luck next time.", 0
+            answer = num1 * num2
         
-class LuckyNine(Game):
+        user_answer = int(input(f"What is {num1} {operator} {num2}? "))
+        if user_answer == answer:
+            return "Correct answer!", 5
+        else:
+            return f"Wrong answer! The correct answer is {answer}.", 0
+
+class WordScramble(Game):
+    def __init__(self):
+        super().__init__(2)
+    
+    def play(self):
+        words = ['python', 'computer', 'algorithm', 'variable', 'function']
+        word = random.choice(words)
+        scrambled_word = ''.join(random.sample(word, len(word)))
+        
+        print("Unscramble the word:", scrambled_word)
+        user_guess = input("Your guess: ")
+        if user_guess == word:
+            return "Correct guess!", 5
+        else:
+            return f"Wrong guess! The correct word is {word}.", 0
+
+class IloiloTrivia(Game):
     def __init__(self):
         super().__init__(3)
     
     def play(self):
-        user_card = random.randint(1, 9)
-        computer_card = random.randint(1, 9)
-        if user_card > computer_card:
-            return f"You won! Your card ({user_card}) is higher than the computer's card ({computer_card}).", 5
-        elif user_card < computer_card:
-            return f"You lost! Your card ({user_card}) is lower than the computer's card ({computer_card}).", 0
+        questions = {
+            "What is the capital of Iloilo?": "Iloilo City",
+            "Once refered to as the queen city of the south?": "Iloilo",
+            "Most famous food?": "Batchoy"
+        }
+        question = random.choice(list(questions.keys()))
+        answer = questions[question]
+        
+        user_answer = input(question + " ")
+        if user_answer.lower() == answer.lower():
+            return "Correct answer!", 5
         else:
-            return f"It's a draw! Your card and the computer's card are both {user_card}.", 0
+            return f"Wrong answer! The correct answer is {answer}.", 0
 
-class Fishing(Game):
+class CPUQuiz(Game):
     def __init__(self):
-        super().__init__(5)
-        self.fish_types = ['Trash', 'Worm', 'Salmon', 'Bass', 'Catfish','Tilapia', 'Legendary Bangus']
+        super().__init__(4)
     
     def play(self):
-        fish = random.choice(self.fish_types)
-        if fish in ['Trash', 'Worm']:
-            return f"You lost! You caught a {fish}.", 0
+        questions = {
+            "Who is the president of CPU?": "Ernest Howard B. Dagohoy",
+            "What year was CPU built?": "1905",
+            "CPU first Filipino president?": "Rex D. Drilon"
+        }
+        question = random.choice(list(questions.keys()))
+        answer = questions[question]
+        
+        user_answer = input(question + " ")
+        if user_answer.lower() == answer.lower():
+            return "Correct answer!", 5
         else:
-            tickets_won = 1 if fish in ['Salmon', 'Bass'] else 2 if fish == 'Catfish' else 5 if fish == 'Tilapia' else 50
-            return f"You won! You caught a {fish}.", tickets_won
+            return f"Wrong answer! The correct answer is {answer}.", 0
+
+class ScienceExperiment(Game):
+    def __init__(self):
+        super().__init__(5)
+    
+    def play(self):
+        experiments = {
+            "What happens when you mix vinegar and baking soda?": "Fizzing",
+            "What is the primary function of chlorophyll in plants?": "Photosynthesis",
+            "What happens when you heat water?": "Boil"
+        }
+        question = random.choice(list(experiments.keys()))
+        answer = experiments[question]
+        
+        user_answer = input(question + " ")
+        if user_answer.lower() == answer.lower():
+            return "Correct answer!", 5
+        else:
+            return f"Wrong answer! The correct answer is {answer}.", 0
 
 class TicketBooth:
     def __init__(self):
-        self.prizes = {1: "Toy Car", 2: "Teddy Bear", 3: "iPhone"}
-        self.prize_costs = {1: 5, 2: 10, 3: 100}
+        self.prizes = {1: "Pen", 2: "Book", 3:"Calculator", 4:"Scientific Calculator", 5: "iPhone"}
+        self.prize_costs = {1: 10, 2: 20, 3: 30,4: 40, 5:100}
     
     def exchange_tickets(self, tickets):
         print("Available prizes:")
@@ -130,10 +170,8 @@ class TicketBooth:
             print("Invalid prize number.")
         return tickets
 
-#usage
-print("Welcome to the Arcade!")
-user_type = input("Are you a student or a worker? ").strip()
-arcade = Arcade(user_type)
+# usage
+arcade = Arcade()
 ticket_booth = TicketBooth()
 
 while True:
@@ -141,20 +179,16 @@ while True:
     print("Money: ", arcade.money)
     print("Tokens: ", arcade.tokens)
     print("Tickets: ", arcade.tickets)
-    print("1. Add money")
-    print("2. Buy token")
-    print("3. Play game")
-    print("4. Go to Ticket Booth")
-    print("5. Quit")
+    print("1. Buy token")
+    print("2. Play game")
+    print("3. Go to Ticket Booth")
+    print("4. Quit")
     choice = int(input("Enter your choice: "))
 
     if choice == 1:
-        amount = int(input("Enter the amount to add: "))
-        arcade.add_money(amount)
-    elif choice == 2:
         if arcade.buy_token(2):
             print("Token bought successfully!")
-    elif choice == 3:
+    elif choice == 2:
         while True:
             print("\nGames:")
             for i, game in enumerate(arcade.games):
@@ -167,7 +201,7 @@ while True:
                 play_again = input("Do you want to play again? (y/n): ")
                 if play_again.lower() != 'y':
                     break
-    elif choice == 4:
+    elif choice == 3:
         arcade.tickets = ticket_booth.exchange_tickets(arcade.tickets)
         while True:
             buy_more = input("Do you want to buy more prizes? (y/n): ")
@@ -177,7 +211,7 @@ while True:
                 arcade.tickets = ticket_booth.exchange_tickets(arcade.tickets)
             else:
                 print("Invalid choice! Please enter 'y' or 'n'.")
-    elif choice == 5:
+    elif choice == 4:
         print("Thank you for playing!")
         break
 
