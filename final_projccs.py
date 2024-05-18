@@ -53,9 +53,7 @@ class Arcade:
         return True
     
     def play_game(self, game_choice):
-        if game_choice == len(self.games):
-            return False
-        elif game_choice < len(self.games):
+        if game_choice < len(self.games):
             if self.tokens >= self.token_prices[game_choice]:
                 self.tokens -= self.token_prices[game_choice]
                 game = self.games[game_choice]
@@ -70,8 +68,6 @@ class Arcade:
         else:
             print("Invalid game choice!")
             return False
-
-
 
 class Game:
     def __init__(self, ticket_price):
